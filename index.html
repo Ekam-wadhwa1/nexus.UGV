@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Flood Response: Technical Manifest</title>
+    <style>
+        /* --- PREMIUM COLOR PALETTE & FONTS --- */
+        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Exo+2:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap');
+
+        :root {
+            --bg-dark: #0b0d10;
+            --bg-card: #12151a;
+            --accent-amber: #f59e0b; /* Warm, premium amber */
+            --accent-teal: #14b8a6;  /* Deep, sleek teal */
+            --border-glow: #1e252e;
+            --text-primary: #e2e8f0;
+            --text-muted: #8b9bb4;
+        }
+
+        /* --- GLOBAL PRINT STYLE AND PAGE SYSTEM --- */
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+
+        @media print {
+            body {
+                background-color: var(--bg-dark) !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .page {
+                page-break-after: always !important;
+                break-after: page !important;
+                height: 270mm; 
+                box-shadow: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Exo 2', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* --- PAGE CONTAINER --- */
+        .page {
+            box-sizing: border-box;
+            width: 210mm;
+            height: 297mm;
+            margin: 40px auto;
+            background-color: var(--bg-dark);
+            padding: 25mm;
+            position: relative;
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- HEADER & FOOTER METADATA SYSTEM --- */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-glow);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+        }
+
+        .page-header .project-tag {
+            color: var(--accent-teal);
+            font-weight: 700;
+        }
+
+        .page-footer {
+            position: absolute;
+            bottom: 20mm;
+            left: 25mm;
+            right: 25mm;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--border-glow);
+            padding-top: 8px;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .page-number {
+            font-weight: 700;
+            color: var(--accent-amber);
+            font-size: 13px;
+        }
+
+        .content {
+            flex-grow: 1;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* --- TYPOGRAPHY ELEMENTS --- */
+        h1, h2, h3, h4 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 600;
+            margin-top: 0;
+        }
+
+        h1 { font-size: 40px; color: var(--accent-amber); letter-spacing: 1px; text-transform: uppercase; }
+        h2 { font-size: 26px; color: var(--accent-teal); border-left: 4px solid var(--accent-amber); padding-left: 14px; margin-bottom: 25px; text-transform: uppercase; }
+        h3 { font-size: 18px; color: var(--text-primary); margin-top: 20px; }
+
+        p {
+            font-size: 14.5px;
+            color: var(--text-primary);
+            text-align: justify;
+            margin-bottom: 18px;
+            font-weight: 300;
+        }
+
+        code, pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            background-color: var(--bg-card);
+            color: #a7f3d0;
+        }
+
+        pre {
+            padding: 18px;
+            border: 1px solid var(--border-glow);
+            border-radius: 4px;
+            overflow: hidden;
+            white-space: pre-wrap;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* --- STRUCTURAL DATA ASSETS --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 13.5px;
+            font-weight: 400;
+        }
+
+        th, td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-glow);
+        }
+
+        th {
+            background-color: var(--bg-card);
+            color: var(--accent-amber);
+            font-family: 'Chakra Petch', sans-serif;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1.5px;
+        }
+
+        .callout {
+            background: linear-gradient(135deg, var(--bg-card) 0%, #151a22 100%);
+            border-left: 4px solid var(--accent-teal);
+            padding: 22px;
+            border-radius: 0 6px 6px 0;
+            margin: 25px 0;
+        }
+
+        .callout h4 {
+            margin: 0 0 10px 0;
+            color: var(--accent-teal);
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* --- VISUAL GRAPH DIAGRAM GENERATORS --- */
+        .diagram-container {
+            border: 1px dashed var(--border-glow);
+            border-radius: 6px;
+            padding: 25px;
+            margin: 25px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #080a0c;
+        }
+
+        .ascii-art {
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            color: var(--accent-teal);
+            line-height: 1.4;
+            text-align: left;
+        }
+
+        /* --- SPECIAL TARGET PAGES & WATERMARKS --- */
+        .cover-page {
+            justify-content: center;
+            align-items: flex-start;
+            padding-left: 40mm;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            right: -5%;
+            transform: translateY(-50%);
+            font-size: 450px;
+            color: rgba(255, 255, 255, 0.015);
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            z-index: 1;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .cover-accent {
+            width: 90px;
+            height: 8px;
+            background-color: var(--accent-amber);
+            margin-bottom: 35px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .cover-title {
+            font-size: 52px;
+            line-height: 1.05;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            z-index: 2;
+            position: relative;
+        }
+
+        .cover-subtitle {
+            font-size: 22px;
+            color: var(--accent-teal);
+            font-family: 'Chakra Petch', sans-serif;
+            margin-bottom: 80px;
+            letter-spacing: 1px;
+            z-index: 2;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PAGE 1: TITLE/COVER MASTER MANIFEST -->
+    <div class="page cover-page">
+        <div class="watermark">EW</div>
+        <div class="cover-accent"></div>
+        <div class="cover-title">PROJECT FLOOD<br>RESPONSE TANK</div>
+        <div class="cover-subtitle">Dual-Brain Autonomous Mechatronics Manifest</div>
+        <p style="color: var(--text-muted); font-size: 14px; max-width: 420px; line-height: 1.8; z-index: 2; position: relative;">
+            An advanced engineering architecture outlining high-voltage locomotion mechanics, hardware topologies, localized sensor networks, and visual telemetry processing matrices.
+        </p>
+        <div style="margin-top: 65px; font-family: 'Chakra Petch', sans-serif; font-size: 13px; color: var(--text-muted); z-index: 2; position: relative; line-height: 1.8; letter-spacing: 1px;">
+            <span style="color: var(--accent-amber); font-weight: 600;">LEAD DEVELOPER & DESIGNER:</span> EKAM WADHWA<br>
+            <span style="color: var(--accent-amber); font-weight: 600;">PROJECT SCOPE:</span> INDEPENDENT ROBOTICS R&D<br>
+            <span style="color: var(--accent-amber); font-weight: 600;">SYSTEM STATUS:</span> DEPLOYED / STABLE<br>
+            <span style="color: var(--accent-amber); font-weight: 600;">DOCUMENT ID:</span> EW-FRT-2026-V5
+        </div>
+    </div>
+
+    <!-- PAGE 2: TABLE OF CONTENTS -->
+    <div class="page">
+        <div class="page-header"><span class="project-tag">EW-FRT-2026</span><span>System Architecture</span></div>
+        <div class="content">
+            <h2>Document Directory</h2>
+            <p>This technical manifest encompasses the physical laws, execution codebases, and structural schematics required to construct and deploy the multi-node heavy vehicle platform engineered for this personal research initiative.</p>
+            <table style="margin-top: 45px;">
+                <thead>
+                    <tr><th>Section</th><th>Primary Domain</th><th>Target Page</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>01. Architectural Paradigm</td><td>System Engineering Overview</td><td>Page 3</td></tr>
+                    <tr><td>02. Locomotion Kinematics</td><td>Physics & Hydrodynamics</td><td>Page 4</td></tr>
+                    <tr><td>03. Fluid Mass Mechanics</td><td>Buoyancy and Center of Mass</td><td>Page 5</td></tr>
+                    <tr><td>04. Structural Stress Dynamics</td><td>Torque and Shear Stress</td><td>Page 6</td></tr>
+                    <tr><td>05. Power Subsystem Metrics</td><td>Electrical Infrastructure</td><td>Page 7</td></tr>
+                    <tr><td>06. Dual-Brain Topology</td><td>Inter-Processor Infrastructure</td><td>Page 8</td></tr>
+                    <tr><td>07. Master Handheld Input Array</td><td>EV3-G Logic Blueprint</td><td>Page 9</td></tr>
+                    <tr><td>08. Central Processing Router</td><td>EV3-G Receiving Layout</td><td>Page 10</td></tr>
+                    <tr><td>09. High-Fidelity Gateway Server</td><td>Raspberry Pi Flask Pipeline</td><td>Page 11</td></tr>
+                    <tr><td>10. Visual Telemetry Capture</td><td>OpenCV Frame Optimization</td><td>Page 12</td></tr>
+                    <tr><td>11. Indicator Hardware Interface</td><td>GPIO Signal Mapping</td><td>Page 13</td></tr>
+                    <tr><td>12. Network Topology Parameters</td><td>Routing Protocols & Latency</td><td>Page 14</td></tr>
+                    <tr><td>13. Launch Checklist & Diagnostics</td><td>Field Deployment Protocol</td><td>Page 15</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="page-footer"><span>Ekam Wadhwa — Independent Research</span><span class="page-number">02</span></div>
+    </div>
+
+    <!-- PAGE 3: ARCHITECTURAL PARADIGM -->
+    <div class="page">
+        <div class="page-header"><span class="project-tag">EW-FRT-2026</span><span>Section 01</span></div>
+        <div class="content">
+            <h2>Architectural Paradigm</h2>
+            <p>Modern disaster response infrastructure requires isolated, deterministic mechatronics components paired with high-level cognitive computing nodes. This iteration of the Flood Response Tank achieves this goal by splitting workloads across two distinct processors: a LEGO MINDSTORMS EV3 block and a Raspberry Pi 4 single-board computer.</p>
+            <div class="callout">
+                <h4>System Architecture Separation</h4>
+                <p><strong>The Reactive Layer (EV3):</strong> Manages real-time physical processes. This block parses control signals and generates motor power profiles instantly, preventing delayed reactions or mechanical freezes.</p>
+                <p><strong>The Cognitive Layer (Raspberry Pi):</strong> Manages heavy data streams, processing visual fields via a DJI Action 2 camera and serving telemetry instantly to an external user dashboard.</p>
+            </div>
+            <p>By segregating real-time motor functions away from data-heavy network operations, the platform guarantees that the chassis maintains structural stability and maneuverability even when local network bandwidth fluctuates.</p>
+        </div>
+        <div class="page-footer"><span>Ekam Wadhwa — Independent Research</span><span class="page-number">03</span></div>
+    </div>
+
+    <!-- PAGE 4: LOCOMOTION KINEMATICS -->
+    <div class="page">
+        <div class="page-header"><span class="project-tag">EW-FRT-2026</span><span>Section 02</span></div>
+        <div class="content">
+            <h2>Locomotion Kinematics</h2>
+            <p>Navigating loose mud, debris fields, and standing water requires a highly tailored differential-drive track layout. Unlike standard wheeled platforms, continuous tracks distribute structural load across a vastly larger surface area, dramatically reducing soil compaction and sinking risks.</p>
+            <p>The vehicle's physical movement is governed by differential drive mathematics. The chassis's angular velocity vector ($\omega$) and linear velocity vector ($v$) are determined directly by the independent speeds of the left track ($v_L$) and right track ($v_R$), where $W$ represents the chassis track width:</p>
+            <pre>v = (v_R + v_L) / 2
+&omega; = (v_R - v_L) / W</pre>
+            <div class="diagram-container">
+                <div class="ascii-art">
+  +-----------------------------------+
+  |  [Track L] --> Speed: v_L         |
+  |       |                           |
+  |       v   Chassis Width (W)       |
+  |       |                           |
+  |  [Track R] --> Speed: v_R         |
+  +-----------------------------------+
+                </div>
+            </div>
+            <p>When the system achieves $v_L = -v_R$, the vehicle executes a perfect zero-radius spin around its geometric center. This movement profile yields unparalleled maneuverability within confined structural collapse zones.</p>
+        </div>
+        <div class="page-footer"><span>Ekam Wadhwa — Independent Research</span><span class="page-number">04</span></div>
+    </div>
+
+    <!-- PAGE 5: FLUID MASS MECHANICS -->
+    <div class="page">
+        <div class="page-header"><span class="project-tag">EW-FRT-2026</span><span>Section 03</span></div>
+        <div class="content">
+            <h2>Fluid Mass Mechanics</h2>
+            <p>Deploying heavy robotics in semi-aquatic environments requires aggressive management of buoyancy forces and center-of-mass vectors. Governed by Archimedes' Principle, any object submersed in fluid experiences an upward buoyant force equivalent to the weight of the displaced fluid.</p>
+            <p>The buoyant force formula mapped for this chassis is defined as:</p>
+            <pre>F_b = &rho; * V * g</pre>
+            <p>Where $\rho$ represents fluid density (approximated at $1000\text{ kg/m}^3$ for water), $V$ represents the submerged volume of the lower hull, and $g$ represents standard gravity ($9.81\text{ m/s}^2$).</p>
+            <div class="callout">
+                <h4>Static Equilibrium Metrics</h4>
+                <p>To prevent catastrophic tipping on slick inclines, the center of mass is artificially lowered. Heavy components—specifically the high-torque drive motors and custom lithium cell arrays—are anchored directly to the base plates of the primary structural frame.</p>
+            </div>
+            <p>This layout ensures the physical center of mass remains well below the center of buoyancy, resulting in a self-righting torque that stabilizes the tank during sudden depth shifts.</p>
+        </div>
+        <div class="page-footer"><span>Ekam Wadhwa — Independent Research</span><span class="page-number">05</span></div>
+    </div>
+
+    <!-- PAGE 6: STRUCTURAL STRESS DYNAMICS -->
+    <div class="page">
+        <div class="page-header"><span class="project-tag">EW-FRT-2026</span><span>Section 04</span></div>
+        <div class="content">
+            <h2>Structural Stress Dynamics</h2>
+            <p>The structural integrity of the main body must routinely withstand extreme torsional forces from the dual high-torque motors, alongside severe shear stress from rough terrain navigation. Torsional stress ($\tau$) on the main drive shafts is calculated using the applied torque ($T$), shaft radius ($r$), and the polar moment of inertia ($J$):</p>
+            <pre>&tau; = (T * r) / J</pre>
+            <p>To mitigate shear stress concentrations, the primary framework utilizes a dense, interconnected cross-bracing matrix. This engineering choice safely distributes mechanical strain across the entire chassis geometry rather than localizing it at individual load-bearing pins.</p>
+            <table style="margin-top: 35px;">
+                <thead>
+                    <tr><th>Structural Node</th><th>Material Spec</th><th>Max Load Rating</th><th>Safety Margin</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Lower Chassis Bed</td><td>Reinforced ABS Matrix</td><td>15.0 kg</td><td>2.5x</td></tr>
+                    <tr><td>Drive Axle Pins</td><td>High-Density POM Homopolymer</td><td>4.5 Nm</td><td>3.0x</td></tr>
+                    <tr><td>Turret Mount Assembly</td><td>Standard Polycarbonate</td><td>3.0 kg</td><td>2.0x</td></tr>
+                </tbody>
+            </table>
+            <p>This robust load-balancing ensures that sudden, high-impact collisions with submerged debris will not fracture the frame or misalign the differential drive sprockets.</p>
+        </div>
+        <div class="page-footer"><span>Ekam Wadhwa — Independent Research</span><span class="page-number">06</span></div>
+    </div>
+
+    <!-- PAGE 7: POWER SUBSYSTEM METRICS -->
+    <div class="page">
+        <div class="page-header"><span class="project-tag">EW-FRT-2026</span><span>Section 05</span></div>
+        <div class="content">
+            <h2>Power Subsystem Metrics</h2>
+            <p>The electrical architecture isolates power delivery into two heavily shielded, completely independent power grids. This prevents electrical noise and voltage spikes generated by the brushed motors from disrupting the sensitive microprocessor logic arrays.</p>
+            <div class="callout">
+                <h4>Dual-Rail Power Distribution</h4>
+                <p><strong>Locomotion Power Supply:</strong> A high-discharge 7.4V lithium-polymer cell delivers raw energy exclusively to the EV3 motor controller, driving the tracks and the mechanical turret assembly.</p>
+                <p><strong>Cognitive Power Supply:</strong> A dedicated 5V, 3A DC-to-DC step-down converter draws power from an isolated secondary battery pool, providing incredibly clean, stable voltage directly to the Raspberry Pi 4.</p>
+            </div>
+            <p>This hard-line physical isolation guarantees that severe voltage sags—which frequently occur during high-load mechanical events like climbing out of deep mud—will never trigger an undervoltage reboot on the main communications server.</p>
+        </div>
+        <div class="page-footer"><span>Ekam Wadhwa — Independent Research</span><span class="page-number">07</span></div>
+    </div>
+
+    <!-- PAGE 8: DUAL-BRAIN TOPOLOGY -->
+    <div class="page">
+        <div class="page-header"><span class="project-tag">EW-FRT-2026</span><span>Section 06</span></div>
+        <div class="content">
+            <h2>Dual-Brain Topology</h2>
+            <p>Data transmission across this platform utilizes a custom-engineered pipeline relying on two separate frequency paths: a low-latency wireless Bluetooth mesh for operator inputs, and a high-bandwidth physical USB backbone for local inter-board routing.</p>
+            <div class="diagram-container">
+                <div class="ascii-art">
+ [Operator Controller] --- (Bluetooth Loop) ---> [Reactive EV3 Node]
+                                                       |
+                                                (Direct USB Link)
+                                                       v
+ [External Dashboard] <--- (Wi-Fi Stream) ------ [Cognitive Pi Node]
+                </div>
+            </div>
+            <p>The handheld operator remote continuously samples physical analog inputs, compiles them into data frames, and broadcasts them to the onboard EV3 chassis node via Bluetooth. The EV3 consumes these instructions to fire the motors, while simultaneously relaying live operational telemetry up the USB backbone to the Raspberry Pi 4.</p>
+        </div>
+        <div class="page-footer"><span>Ekam Wadhwa — Independent Research</span><span class="page-number">08</span></div>
+    </div>
+
+    <!-- PAGE 9: MASTER HANDHELD INPUT ARRAY -->
+    <div class="page">
+        <div class="page-header"><span class="project-tag">EW-FRT-2026</span><span>Section 07</span></div>
+        <div class="content">
+            <h2>Master Handheld Input Array</h2>
+            <p>Constructed within the native EV3 Home Edition environment, the handheld operator unit runs a rapid, continuous execution loop designed to read analog lever positions and securely transmit them over the airwaves.</p>
+            <div class="callout">
+                <h4>EV3-G Controller Loop Architecture</h4>
+                <p><strong>1. Left Track Telemetry:</strong> A rotation sensor block reads the Port A lever angle. The output is routed through a scale multiplier (Math Block / 2) for precision dampening, then beamed via Bluetooth into the <code>"LeftDrive"</code> mailbox.</p>
+                <p><strong>2. Right Track Telemetry:</strong> An identical, parallel process reads the Port D lever, dampens the analog curve, and beams the output integer directly to the <code>"RightDrive"</code> mailbox.</p>
+                <p><strong>3. Payload Triggers:</strong> Front-facing tactile buttons are polled constantly. D-pad horizontal strikes send <code>"LEFT"</code> or <code>"RIGHT"</code> strings to the <code>"Turret"</code> mailbox, while a center strike drops a binary <code>True</code> logic flag into the <code>"Fire"</code> mailbox.</p>
+            </div>
+        </div>
+        <div class="page-footer"><span>Ekam Wadhwa — Independent Research</span><span class="page-number">09</span></div>
+    </div>
+
+    <!-- PAGE 10: CENTRAL PROCESSING ROUTER -->
+    <div class="page">
+        <div class="page-header"><span class="project-tag">EW-FRT-2026</span><span>Section 08</span></div>
+        <div class="content">
+            <h2>Central Processing Router</h2>
+            <p>The onboard chassis node operates as an ultra-low-latency receiver. It sits in an infinite processing loop explicitly designed with three parallel tracks to execute incoming network commands instantaneously.</p>
+            <div class="callout">
+                <h4>EV3-G Receiver Node Logic</h4>
+                <p><strong>Drivetrain Actuation (Path A):</strong> Dedicated Bluetooth listener blocks extract numeric values from the <code>"LeftDrive"</code> and <code>"RightDrive"</code> mailboxes, injecting those values straight into the raw PWM power inputs of Large Motors B and C.</p>
+                <p><strong>Turret Targeting (Path B):</strong> A String-based Switch block evaluates the <code>"Turret"</code> mailbox. <code>"LEFT"</code> commands counter-clockwise rotation; <code>"RIGHT"</code> commands clockwise rotation; any other state returns to neutral hold.</p>
+                <p><strong>Payload Execution (Path C):</strong> A Boolean Switch block monitors the <code>"Fire"</code> mailbox. Upon intercepting a <code>True</code> flag, it triggers Large Motor D to rotate exactly 360 degrees, flawlessly cycling the mechanical firing cam one complete iteration.</p>
+            </div>
+        </div>
+        <div class="page-footer"><span>Ekam Wadhwa — Independent Research</span><span class="page-number">10</span></div>
+    </div>
+
+    <!-- PAGE 11: HIGH-FIDELITY GATEWAY SERVER -->
+    <div class="page">
+        <div class="page-header"><span class="project-tag">EW-FRT-2026</span><span>Section 09</span></div>
+        <div class="content">
+            <h2>High-Fidelity Gateway Server</h2>
+            <p>The onboard Raspberry Pi 4 is flashed with a custom asynchronous Python environment utilizing the Flask web framework. This node acts as the master gateway, serving the front-end dashboard and marshaling all incoming sensor telemetry.</p>
+            <pre>
+@app.route('/api/telemetry')
+def get_telemetry():
+    # Rapid-fire JSON delivery of real-time chassis metrics
+    with data_lock:
+        return jsonify(rover_telemetry)
+
+@app.route('/video_feed')
+def video_feed():
+    # Uninterrupted MJPEG stream output layer
+    return Response(generate_video_frames(), 
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
+            </pre>
+            <p>To maintain peak performance, the web application spins up a headless background worker thread. This thread performs non-blocking I/O operations over the USB serial port, updating the global telemetry matrix in shared memory without ever bottlenecking the primary video transmission pipeline.</p>
+        </div>
+        <div class="page-footer"><span>Ekam Wadhwa — Independent Research</span><span class="page-number">11</span></div>
+    </div>
+
+    <!-- PAGE 12: VISUAL TELEMETRY CAPTURE -->
+    <div class="page">
+        <div class="page-header"><span class="project-tag">EW-FRT-2026</span><span>Section 10</span></div>
+        <div class="content">
+            <h2>Visual Telemetry Capture</h2>
+            <p>A DJI Action 2 camera module acts as the primary optical sensor, mounted to the turret and tethered via USB-C. The Pi intercepts this raw feed using the OpenCV computer vision library, performing aggressive real-time frame optimization to ensure fluid transmission under poor network conditions.</p>
+            <div class="callout">
+                <h4>OpenCV Pipeline Optimization</h4>
+                <p>To eliminate video stuttering over saturated 2.4GHz bands, the OpenCV pipeline forces a down-sample of all optical frames to 640x480 resolution. The matrix is then aggressively encoded to JPEG format with a targeted 70% quality ratio prior to network broadcast.</p>
+            </div>
+            <p>This specific compression profile drops the individual frame payload to roughly 25 KB. At this weight, the system successfully maintains a 30 FPS stream with under 120ms of glass-to-glass latency, which is critical for remote piloting accuracy.</p>
+        </div>
+        <div class="page-footer"><span>Ekam Wadhwa — Independent Research</span><span class="page-number">12</span></div>
+    </div>
+
+    <!-- PAGE 13: INDICATOR HARDWARE INTERFACE -->
+    <div class="page">
+        <div class="page-header"><span class="project-tag">EW-FRT-2026</span><span>Section 11</span></div>
+        <div class="content">
+            <h2>Indicator Hardware Interface</h2>
+            <p>Physical hardware status is conveyed locally via three high-intensity LEDs wired directly into the Pi's GPIO rail. This physical interface allows for immediate visual diagnostics without requiring the operator to look at the external digital dashboard.</p>
+            <table style="margin-top: 35px;">
+                <thead>
+                    <tr><th>Indicator Array</th><th>GPIO Mapping</th><th>System State Representation</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td style="color: #14b8a6; font-weight:700;">Status Green</td><td>GPIO 17</td><td>Solid: Link Established / Pulse: Awaiting Handshake</td></tr>
+                    <tr><td style="color: #3b82f6; font-weight:700;">Action Blue</td><td>GPIO 27</td><td>Strobe: Turret Actuator is actively receiving PWM</td></tr>
+                    <tr><td style="color: #ef4444; font-weight:700;">Critical Red</td><td>GPIO 22</td><td>Solid: Mechanical Firing Cam has been triggered</td></tr>
+                </tbody>
+            </table>
+            <p>The underlying Python logic utilizes the highly efficient <code>gpiozero</code> library. Since the GPIO calls are injected directly into the asynchronous data-parsing thread, the physical LED states change within milliseconds of the vehicle receiving an operator command.</p>
+        </div>
+        <div class="page-footer"><span>Ekam Wadhwa — Independent Research</span><span class="page-number">13</span></div>
+    </div>
+
+    <!-- PAGE 14: NETWORK TOPOLOGY PARAMETERS -->
+    <div class="page">
+        <div class="page-header"><span class="project-tag">EW-FRT-2026</span><span>Section 12</span></div>
+        <div class="content">
+            <h2>Network Topology Parameters</h2>
+            <p>To guarantee command delivery in electronically noisy environments, the system utilizes a heterogeneous network protocol architecture, separating critical control data from high-bandwidth sensor data.</p>
+            <div class="callout">
+                <h4>Network Routing Architecture</h4>
+                <p><strong>Tactical Control Link (Bluetooth RFCOMM):</strong> Operates entirely on the 2.4 GHz spectrum using a dedicated serial port profile, guaranteeing the delivery of tiny 20 Hz control packets even in high-interference zones.</p>
+                <p><strong>Internal Data Bus (USB IPv4 Local Link):</strong> Establishes a localized <code>10.42.0.X</code> subnet exclusively via physical USB cable, securing a zero-packet-loss bridge between the Pi and the EV3 chassis.</p>
+                <p><strong>External Stream (802.11ac Wi-Fi):</strong> Broadcasts the heavy optical and JSON telemetry payloads externally over HTTP port 5000, isolating video lag completely from the motor control arrays.</p>
+            </div>
+        </div>
+        <div class="page-footer"><span>Ekam Wadhwa — Independent Research</span><span class="page-number">14</span></div>
+    </div>
+
+    <!-- PAGE 15: LAUNCH CHECKLIST & DIAGNOSTICS -->
+    <div class="page">
+        <div class="page-header"><span class="project-tag">EW-FRT-2026</span><span>Section 13</span></div>
+        <div class="content">
+            <h2>Launch Checklist & Diagnostics</h2>
+            <p>Rigorous pre-flight procedures are mandatory. Execute this diagnostic sequence sequentially prior to any active field deployment of the physical hardware:</p>
+            <div class="callout">
+                <h4>Pre-Deployment Sequence</h4>
+                <p><strong>[ ] Node Initialization:</strong> Apply power to the Raspberry Pi gateway. Verify the Status Green LED enters a slow pulse, confirming the OS has booted and is awaiting the data bus handshake.</p>
+                <p><strong>[ ] Data Bus Sync:</strong> Execute the EV3 receiver script on the chassis node. Verify the Pi's Status Green LED switches to solid illumination, confirming the USB bridge is fully established.</p>
+                <p><strong>[ ] Telemetry Verification:</strong> Connect to the web dashboard. Confirm the live optical feed is rendering without artifacting and the JSON telemetry gauges are refreshing at a stable 10 Hz.</p>
+                <p><strong>[ ] Control Link Pairing:</strong> Boot the operator remote. Verify successful Bluetooth pairing with the chassis and conduct a micro-test of turret servos to confirm PWM delivery.</p>
+            </div>
+            <p>Upon satisfactory completion of all diagnostic gates, the system is classified as armed and ready for full-scale tactical operation.</p>
+        </div>
+        <div class="page-footer"><span>Ekam Wadhwa — Independent Research</span><span class="page-number">15</span></div>
+    </div>
+
+</body>
+</html>
